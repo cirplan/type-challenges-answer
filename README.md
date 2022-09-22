@@ -2,6 +2,11 @@
 
 find the questions in [type-challenges][challenges].
 
+* [x] [warm-up (1)](#warm-up (1))
+* [x] [easy (13)](#easy (13))
+* [ ] [medium (68)](#medium (68))
+* [ ] [hard (39)](#hard (39))
+
 ## warm-up (1)
 
 [13・Hello World][13]
@@ -89,6 +94,10 @@ type Unshift<T extends any[], U> = [U, ...T]
 ```ts
 type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any ? P : never
 ```
+
+## medium (68)
+
+## hard (39)
 
 
 [challenges]: https://github.com/type-challenges/type-challenges
