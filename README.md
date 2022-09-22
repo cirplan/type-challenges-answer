@@ -2,10 +2,10 @@
 
 find the questions in [type-challenges][challenges].
 
-* [x] [warm-up (1)](#warm-up (1))
-* [x] [easy (13)](#easy (13))
-* [ ] [medium (68)](#medium (68))
-* [ ] [hard (39)](#hard (39))
+* [x] [warm-up (1)](#warm-up-1)
+* [x] [easy (13)](#easy-13)
+* [ ] [medium (68)](#medium-68)
+* [ ] [hard (39)](#hard-39)
 
 ## warm-up (1)
 
