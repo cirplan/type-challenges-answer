@@ -142,30 +142,63 @@ type TupleToUnion<T extends any[]> = T[number]
 type TupleToUnion<T extends any[]> = T extends Array<infer R> ? R : never
 ```
 
-[12・Chainable Options][]
+[12・Chainable Options][12]
 ```ts
+type Chainable<T = {}> = {
+  option<K extends string, V>(
+    key: K extends keyof T 
+      ? Equal<V, T[K]> extends true
+        ? never 
+        : K 
+      : K,
+    value: V): Chainable<{ [S in keyof T as S extends K ? never : S]: T[S] } & { [S in K]: V }>
+  get(): T
+}
 ```
-[15・Last of Array][]
+
+[15・Last of Array][15]
 ```ts
+type Last<T extends any[]> = T extends [...infer S, infer R] ? R : never
 ```
-[16・Pop][]
+
+[16・Pop][16]
 ```ts
+type Pop<T extends any[]> = T extends [...infer S, infer R] ? S : never;
 ```
-[20・Promise.all][]
+
+[20・Promise.all][20]
 ```ts
+declare function PromiseAll<T extends any[]>(values: readonly [...T]): 
+  Promise<{ [K in keyof T]: T[K] extends Promise<infer R> ? R : T[K] }>
+
 ```
-[62・Type Lookup][]
+
+[62・Type Lookup][62]
 ```ts
+type LookUp<U, T extends string> =  U extends { type: T } ? U : never
 ```
-[106・Trim Left][]
+
+[106・Trim Left][106]
 ```ts
+type Space = ' ' | '\n' | '\t'
+type TrimLeft<S extends string> = S extends `${Space}${infer R}` ? TrimLeft<R> : S;
 ```
-[108・Trim][]
+
+[108・Trim][108]
 ```ts
+type Space = ' ' | '\n' | '\t'
+type Trim<S extends string> = S extends `${Space}${infer R}` 
+  ? Trim<R> 
+  : S extends `${infer R}${Space}`
+    ? Trim<R> 
+    : S
 ```
-[110・Capitalize][]
+
+[110・Capitalize][110]
 ```ts
+type MyCapitalize<S extends string> = S extends `${infer F}${infer R}` ? `${Uppercase<F>}${R}` : S
 ```
+
 [116・Replace][]
 ```ts
 ```
@@ -345,10 +378,18 @@ type TupleToUnion<T extends any[]> = T extends Array<infer R> ? R : never
 [9]: https://github.com/type-challenges/type-challenges/blob/main/questions/00009-medium-deep-readonly/README.md
 [10]: https://github.com/type-challenges/type-challenges/blob/main/questions/00010-medium-tuple-to-union/README.md
 [11]: https://github.com/type-challenges/type-challenges/blob/main/questions/00011-easy-tuple-to-object/README.md
+[12]: https://github.com/type-challenges/type-challenges/blob/main/questions/00012-medium-chainable-options/README.md
 [13]: https://github.com/type-challenges/type-challenges/blob/main/questions/00013-warm-hello-world/README.md
 [14]: https://github.com/type-challenges/type-challenges/blob/main/questions/00014-easy-first/README.md
+[15]: https://github.com/type-challenges/type-challenges/blob/main/questions/00015-medium-last/README.md
+[16]: https://github.com/type-challenges/type-challenges/blob/main/questions/00016-medium-pop/README.md
 [18]: https://github.com/type-challenges/type-challenges/blob/main/questions/00018-easy-tuple-length/README.md
+[20]: https://github.com/type-challenges/type-challenges/blob/main/questions/00020-medium-promise-all/README.md
 [43]: https://github.com/type-challenges/type-challenges/blob/main/questions/00043-easy-exclude/README.md
+[62]: https://github.com/type-challenges/type-challenges/blob/main/questions/00062-medium-type-lookup/README.md
+[106]: https://github.com/type-challenges/type-challenges/blob/main/questions/00106-medium-trimleft/README.md
+[108]: https://github.com/type-challenges/type-challenges/blob/main/questions/00108-medium-trim/README.md
+[110]: https://github.com/type-challenges/type-challenges/blob/main/questions/00110-medium-capitalize/README.md
 [189]: https://github.com/type-challenges/type-challenges/blob/main/questions/00189-easy-awaited/README.md
 [268]: https://github.com/type-challenges/type-challenges/blob/main/questions/00268-easy-if/README.md
 [533]: https://github.com/type-challenges/type-challenges/blob/main/questions/00533-easy-concat/README.md
