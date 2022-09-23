@@ -96,13 +96,254 @@ type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer
 ```
 
 ## medium (68)
+[2・Get Return Type][2]
+```ts
+type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never
+```
+
+[3・Omit][3]
+```ts
+type MyOmit<T, K extends keyof T> = {
+  [P in Exclude<keyof T, K>]: T[P]
+}
+// or use as
+type MyOmit<T, K extends keyof T> = {
+  [P in keyof T as P extends K ? never : P]: T[P]
+}
+```
+
+[8・Readonly 2][8]
+```ts
+type Diff<A, B> = A extends B ? never : A;
+
+type MyReadonly2<T, K extends keyof T = keyof T> = {
+  readonly [S in K]: T[S]
+} & {
+  [S in Diff<keyof T, K>]: T[S]
+}
+
+```
+
+[9・Deep Readonly][9]
+```ts
+type DeepReadonly<T> = {
+  readonly [P in keyof T]: T[P] extends {}
+    ? T[P] extends Function
+      ? T[P]
+      : DeepReadonly<T[P]>
+    : T[P]
+}
+```
+
+[10・Tuple to Union][10]
+```ts
+type TupleToUnion<T extends any[]> = T[number]
+// or 
+type TupleToUnion<T extends any[]> = T extends Array<infer R> ? R : never
+```
+
+[12・Chainable Options][]
+```ts
+```
+[15・Last of Array][]
+```ts
+```
+[16・Pop][]
+```ts
+```
+[20・Promise.all][]
+```ts
+```
+[62・Type Lookup][]
+```ts
+```
+[106・Trim Left][]
+```ts
+```
+[108・Trim][]
+```ts
+```
+[110・Capitalize][]
+```ts
+```
+[116・Replace][]
+```ts
+```
+[119・ReplaceAll][]
+```ts
+```
+[191・Append Argument][]
+```ts
+```
+[296・Permutation][]
+```ts
+```
+[298・Length of String][]
+```ts
+```
+[459・Flatten][]
+```ts
+```
+[527・Append to object][]
+```ts
+```
+[529・Absolute][]
+```ts
+```
+[531・String to Union][]
+```ts
+```
+[599・Merge][]
+```ts
+```
+[612・KebabCase][]
+```ts
+```
+[645・Diff][]
+```ts
+```
+[949・AnyOf][]
+```ts
+```
+[1042・IsNever][]
+```ts
+```
+[1097・IsUnion][]
+```ts
+```
+[1130・ReplaceKeys][]
+```ts
+```
+[1367・Remove Index Signature][]
+```ts
+```
+[1978・Percentage Parser][]
+```ts
+```
+[2070・Drop Char][]
+```ts
+```
+[2257・MinusOne][]
+```ts
+```
+[2595・PickByType][]
+```ts
+```
+[2688・StartsWith][]
+```ts
+```
+[2693・EndsWith][]
+```ts
+```
+[2757・PartialByKeys][]
+```ts
+```
+[2759・RequiredByKeys][]
+```ts
+```
+[2793・Mutable][]
+```ts
+```
+[2852・OmitByType][]
+```ts
+```
+[2946・ObjectEntries][]
+```ts
+```
+[3062・Shift][]
+```ts
+```
+[3188・Tuple to Nested Object][]
+```ts
+```
+[3192・Reverse][]
+```ts
+```
+[3196・Flip Arguments][]
+```ts
+```
+[3243・FlattenDepth][]
+```ts
+```
+[3326・BEM style string][]
+```ts
+```
+[3376・InorderTraversal][]
+```ts
+```
+[4179・Flip][]
+```ts
+```
+[4182・Fibonacci Sequence][]
+```ts
+```
+[4260・AllCombinations][]
+```ts
+```
+[4425・Greater Than][]
+```ts
+```
+[4471・Zip][]
+```ts
+```
+[4484・IsTuple][]
+```ts
+```
+[4499・Chunk][]
+```ts
+```
+[4518・Fill][]
+```ts
+```
+[4803・Trim Right][]
+```ts
+```
+[5117・Without][]
+```ts
+```
+[5140・Trunc][]
+```ts
+```
+[5153・IndexOf][]
+```ts
+```
+[5310・Join][]
+```ts
+```
+[5317・LastIndexOf][]
+```ts
+```
+[5360・Unique][]
+```ts
+```
+[5821・MapTypes][]
+```ts
+```
+[7544・Construct Tuple][]
+```ts
+```
+[8640・Number Range][]
+```ts
+```
+[8767・Combination][]
+```ts
+```
+[8987・Subsequence][]
+```ts
+```
+
 
 ## hard (39)
 
 
 [challenges]: https://github.com/type-challenges/type-challenges
+[2]: https://github.com/type-challenges/type-challenges/blob/main/questions/00002-medium-return-type/README.md
+[3]: https://github.com/type-challenges/type-challenges/blob/main/questions/00003-medium-omit/README.md
 [4]: https://github.com/type-challenges/type-challenges/blob/main/questions/00004-easy-pick/README.md
 [7]: https://github.com/type-challenges/type-challenges/blob/main/questions/00007-easy-readonly/README.md
+[8]: https://github.com/type-challenges/type-challenges/blob/main/questions/00008-medium-readonly-2/README.md
+[9]: https://github.com/type-challenges/type-challenges/blob/main/questions/00009-medium-deep-readonly/README.md
+[10]: https://github.com/type-challenges/type-challenges/blob/main/questions/00010-medium-tuple-to-union/README.md
 [11]: https://github.com/type-challenges/type-challenges/blob/main/questions/00011-easy-tuple-to-object/README.md
 [13]: https://github.com/type-challenges/type-challenges/blob/main/questions/00013-warm-hello-world/README.md
 [14]: https://github.com/type-challenges/type-challenges/blob/main/questions/00014-easy-first/README.md
