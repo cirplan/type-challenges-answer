@@ -199,18 +199,30 @@ type Trim<S extends string> = S extends `${Space}${infer R}`
 type MyCapitalize<S extends string> = S extends `${infer F}${infer R}` ? `${Uppercase<F>}${R}` : S
 ```
 
-[116・Replace][]
+[116・Replace][116]
 ```ts
+type Replace<S extends string, From extends string, To extends string> = S extends `${infer S}${From extends '' ? never : From}${infer E}` 
+  ? `${S}${To}${E}` 
+  : S;
 ```
-[119・ReplaceAll][]
+
+[119・ReplaceAll][119]
 ```ts
+type ReplaceAll<S extends string, From extends string, To extends string> = S extends `${infer S}${From extends '' ? never : From}${infer E}` 
+  ? `${ReplaceAll<S, From, To>}${To}${ReplaceAll<E, From, To>}`
+  : S;
 ```
-[191・Append Argument][]
+
+[191・Append Argument][191]
 ```ts
+type AppendArgument<Fn, A> = Fn extends (...args: infer R) => infer T ? (...args: [...R, A]) => T : never
 ```
-[296・Permutation][]
+
+[296・Permutation][296]
 ```ts
+
 ```
+
 [298・Length of String][]
 ```ts
 ```
@@ -390,8 +402,12 @@ type MyCapitalize<S extends string> = S extends `${infer F}${infer R}` ? `${Uppe
 [106]: https://github.com/type-challenges/type-challenges/blob/main/questions/00106-medium-trimleft/README.md
 [108]: https://github.com/type-challenges/type-challenges/blob/main/questions/00108-medium-trim/README.md
 [110]: https://github.com/type-challenges/type-challenges/blob/main/questions/00110-medium-capitalize/README.md
+[116]: https://github.com/type-challenges/type-challenges/blob/main/questions/00116-medium-replace/README.md
+[119]: https://github.com/type-challenges/type-challenges/blob/main/questions/00119-medium-replaceall/README.md
 [189]: https://github.com/type-challenges/type-challenges/blob/main/questions/00189-easy-awaited/README.md
+[191]: https://github.com/type-challenges/type-challenges/blob/main/questions/00191-medium-append-argument/README.md
 [268]: https://github.com/type-challenges/type-challenges/blob/main/questions/00268-easy-if/README.md
+[296]: https://github.com/type-challenges/type-challenges/blob/main/questions/00296-medium-permutation/README.md
 [533]: https://github.com/type-challenges/type-challenges/blob/main/questions/00533-easy-concat/README.md
 [898]: https://github.com/type-challenges/type-challenges/blob/main/questions/00898-easy-includes/README.md
 [3057]: https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md
