@@ -220,27 +220,64 @@ type AppendArgument<Fn, A> = Fn extends (...args: infer R) => infer T ? (...args
 
 [296・Permutation][296]
 ```ts
-
+type Permutation<T, K = T> = 
+  [T] extends [never] 
+    ? []
+    : K extends K
+      ? [K, ...Permutation<Exclude<T, K>>]
+      : never
 ```
 
-[298・Length of String][]
+[298・Length of String][298]
 ```ts
+type LengthOfString<S extends string, T extends string[] = []> = S extends `${infer F}${infer R}` 
+  ? LengthOfString<R, [...T, F]>
+  : T["length"]
 ```
-[459・Flatten][]
+
+[459・Flatten][459]
 ```ts
+type Flatten<T extends unknown[], R extends unknown[] = []> = T extends [infer F, ...infer E] 
+  ? F extends unknown[]
+    ? Flatten<E, [...R, ...Flatten<F>]>
+    : Flatten<E, [...R, F]>
+  : R
 ```
-[527・Append to object][]
+
+[527・Append to object][527]
 ```ts
+type AppendToObject<T, U extends string, V> = {
+  [K in (keyof T | U)]: K extends keyof T ? T[K] : V
+}
 ```
-[529・Absolute][]
+
+[529・Absolute][529]
 ```ts
+type Absolute<T extends number | string | bigint> = `${T}` extends `-${infer R}`
+  ? R
+  : `${T}`
 ```
-[531・String to Union][]
+
+[531・String to Union][531]
 ```ts
+type StringToUnion<T extends string> = T extends '' 
+  ? never 
+  : T extends `${infer A}${infer R}`
+    ? A | StringToUnion<R>
+    : T
 ```
-[599・Merge][]
+
+[599・Merge][599]
 ```ts
+type Merge<F, S> = {
+  [K in keyof F | keyof S]: K extends keyof S 
+    ? S[K] 
+    : K extends keyof F 
+      ? F[K]
+      : never
+}
 ```
+
 [612・KebabCase][]
 ```ts
 ```
@@ -408,7 +445,13 @@ type AppendArgument<Fn, A> = Fn extends (...args: infer R) => infer T ? (...args
 [191]: https://github.com/type-challenges/type-challenges/blob/main/questions/00191-medium-append-argument/README.md
 [268]: https://github.com/type-challenges/type-challenges/blob/main/questions/00268-easy-if/README.md
 [296]: https://github.com/type-challenges/type-challenges/blob/main/questions/00296-medium-permutation/README.md
+[298]: https://github.com/type-challenges/type-challenges/blob/main/questions/00298-medium-length-of-string/README.md
+[459]: https://github.com/type-challenges/type-challenges/blob/main/questions/00459-medium-flatten/README.md
+[527]: https://github.com/type-challenges/type-challenges/blob/main/questions/00527-medium-append-to-object/README.md
+[529]: https://github.com/type-challenges/type-challenges/blob/main/questions/00529-medium-absolute/README.md
+[531]: https://github.com/type-challenges/type-challenges/blob/main/questions/00531-medium-string-to-union/README.md
 [533]: https://github.com/type-challenges/type-challenges/blob/main/questions/00533-easy-concat/README.md
+[599]: https://github.com/type-challenges/type-challenges/blob/main/questions/00599-medium-merge/README.md
 [898]: https://github.com/type-challenges/type-challenges/blob/main/questions/00898-easy-includes/README.md
 [3057]: https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md
 [3060]: https://github.com/type-challenges/type-challenges/blob/main/questions/03060-easy-unshift/README.md
