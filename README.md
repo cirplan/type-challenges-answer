@@ -278,30 +278,83 @@ type Merge<F, S> = {
 }
 ```
 
-[612・KebabCase][]
+[612・KebabCase][612]
 ```ts
+type KebabCase<S extends string> = S extends `${infer R}${infer P}`
+  ? P extends Uncapitalize<P>
+    ? `${Lowercase<R>}${KebabCase<P>}`
+    : `${Lowercase<R>}-${KebabCase<P>}`
+  : S  
 ```
-[645・Diff][]
+
+[645・Diff][645]
 ```ts
+type Diff<O, O1> = Omit<O & O1, keyof O & keyof O1>
 ```
-[949・AnyOf][]
+
+[949・AnyOf][949]
 ```ts
+type Empty = '' | 0 | false | { [key: string]: never } | [] ;
+
+type AnyOf<T extends readonly any[]> = T extends [infer A, ...infer R]
+  ? A extends Empty 
+    ? AnyOf<R>
+    : true
+  : false
 ```
-[1042・IsNever][]
+
+[1042・IsNever][1042]
 ```ts
+type IsNever<T> = [T] extends [never] ? true : false
 ```
-[1097・IsUnion][]
+
+[1097・IsUnion][1097]
 ```ts
+type IsUnion<T, C = T> = [T] extends [never] 
+  ? false
+  : T extends T 
+    ? [C] extends [T]
+      ? false
+      : true
+    : false
 ```
-[1130・ReplaceKeys][]
+
+[1130・ReplaceKeys][1130]
 ```ts
+type ReplaceKeys<U, T, Y> = {
+  [K in keyof U]: K extends T 
+    ? K extends keyof Y
+      ? Y[K]
+      : never
+    : U[K]
+}
 ```
-[1367・Remove Index Signature][]
+
+[1367・Remove Index Signature][1367]
 ```ts
+type RemoveIndexSignature<T> = {
+  [K in keyof T as string extends K 
+    ? never 
+    : number extends K
+      ? never
+      : symbol extends K
+        ? never
+        : K
+  ]: T[K]
+}
 ```
-[1978・Percentage Parser][]
+
+[1978・Percentage Parser][1978]
 ```ts
+type PercentageParser<A extends string> = A extends `${infer S extends '-' | '+'}${infer N}` 
+  ? N extends `${infer N}%`
+    ? [S, N, '%']
+    : [S, N, '']
+  : A extends `${infer N}%`
+    ? ['', N, '%']
+    : ['', A, '']
 ```
+
 [2070・Drop Char][]
 ```ts
 ```
@@ -452,7 +505,15 @@ type Merge<F, S> = {
 [531]: https://github.com/type-challenges/type-challenges/blob/main/questions/00531-medium-string-to-union/README.md
 [533]: https://github.com/type-challenges/type-challenges/blob/main/questions/00533-easy-concat/README.md
 [599]: https://github.com/type-challenges/type-challenges/blob/main/questions/00599-medium-merge/README.md
+[612]: https://github.com/type-challenges/type-challenges/blob/main/questions/00612-medium-kebabcase/README.md
+[645]: https://github.com/type-challenges/type-challenges/blob/main/questions/00645-medium-diff/README.md
 [898]: https://github.com/type-challenges/type-challenges/blob/main/questions/00898-easy-includes/README.md
+[949]: https://github.com/type-challenges/type-challenges/blob/main/questions/00949-medium-anyof/README.md
+[1042]: https://github.com/type-challenges/type-challenges/blob/main/questions/01042-medium-isnever/README.md
+[1097]: https://github.com/type-challenges/type-challenges/blob/main/questions/01097-medium-isunion/README.md
+[1130]: https://github.com/type-challenges/type-challenges/blob/main/questions/01130-medium-replacekeys/README.md
+[1367]: https://github.com/type-challenges/type-challenges/blob/main/questions/01367-medium-remove-index-signature/README.md
+[1978]: https://github.com/type-challenges/type-challenges/blob/main/questions/01978-medium-percentage-parser/README.md
 [3057]: https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md
 [3060]: https://github.com/type-challenges/type-challenges/blob/main/questions/03060-easy-unshift/README.md
 [3312]: https://github.com/type-challenges/type-challenges/blob/main/questions/03312-easy-parameters/README.md`
