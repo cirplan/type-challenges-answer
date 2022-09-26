@@ -355,12 +355,49 @@ type PercentageParser<A extends string> = A extends `${infer S extends '-' | '+'
     : ['', A, '']
 ```
 
-[2070・Drop Char][]
+[2070・Drop Char][2070]
 ```ts
+type DropChar<S, C> = S extends `${infer A}${infer R}`
+  ? Equal<A, C> extends true
+    ? DropChar<R, C>
+    : `${A}${DropChar<R, C>}`
+  : S
 ```
-[2257・MinusOne][]
+
+[2257・MinusOne][2257]
 ```ts
+type Dict = {
+  '0': [];
+  '1': [0];
+  '2': [0, 0];
+  '3': [0, 0, 0];
+  '4': [0, 0, 0, 0];
+  '5': [0, 0, 0, 0, 0];
+  '6': [0, 0, 0, 0, 0, 0];
+  '7': [0, 0, 0, 0, 0, 0, 0];
+  '8': [0, 0, 0, 0, 0, 0, 0, 0];
+  '9': [0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
+
+type TenTimes<A extends 0[]> = [
+  ...A, ...A, ...A, ...A, ...A,
+  ...A, ...A, ...A, ...A, ...A
+]
+
+type ToArray<
+  N extends string,
+  Result extends 0[] = []
+> = N extends `${infer F extends keyof Dict}${infer R}`
+  ? ToArray<R, [...TenTimes<Result>, ...Dict[F]]>
+  : Result
+
+type MinusOne<
+  T extends number
+> = ToArray<`${T}`> extends [infer F, ...infer R]
+      ? R['length']
+      : never
 ```
+
 [2595・PickByType][]
 ```ts
 ```
@@ -514,6 +551,8 @@ type PercentageParser<A extends string> = A extends `${infer S extends '-' | '+'
 [1130]: https://github.com/type-challenges/type-challenges/blob/main/questions/01130-medium-replacekeys/README.md
 [1367]: https://github.com/type-challenges/type-challenges/blob/main/questions/01367-medium-remove-index-signature/README.md
 [1978]: https://github.com/type-challenges/type-challenges/blob/main/questions/01978-medium-percentage-parser/README.md
+[2070]: https://github.com/type-challenges/type-challenges/blob/main/questions/02070-medium-drop-char/README.md
+[2257]: https://github.com/type-challenges/type-challenges/blob/main/questions/02257-medium-minusone/README.md
 [3057]: https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md
 [3060]: https://github.com/type-challenges/type-challenges/blob/main/questions/03060-easy-unshift/README.md
 [3312]: https://github.com/type-challenges/type-challenges/blob/main/questions/03312-easy-parameters/README.md`
