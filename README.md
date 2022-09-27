@@ -398,27 +398,57 @@ type MinusOne<
       : never
 ```
 
-[2595・PickByType][]
+[2595・PickByType][2595]
 ```ts
+type PickByType<T, U> = {
+  [K in keyof T as T[K] extends U ? K : never]: T[K]
+}
 ```
-[2688・StartsWith][]
+
+[2688・StartsWith][2688]
 ```ts
+type StartsWith<T extends string, U extends string> = T extends `${U}${infer R}`
+  ? true
+  : false
 ```
-[2693・EndsWith][]
+
+[2693・EndsWith][2693]
 ```ts
+type EndsWith<T extends string, U extends string> = T extends `${infer R}${U}`
+  ? true
+  : false
 ```
-[2757・PartialByKeys][]
+
+[2757・PartialByKeys][2757]
 ```ts
+type PartialByKeys<T, K = keyof T> = 
+  { [P in keyof T as P extends K ? never : P]: T[P] } &
+  { [P in keyof T as P extends K ? P : never]?: T[P] } extends infer O ? (
+    { [P in keyof O]: O[P] }
+  ) : never
 ```
-[2759・RequiredByKeys][]
+
+[2759・RequiredByKeys][2759]
 ```ts
+type RequiredByKeys<T, K = keyof T> = { [P in keyof T as P extends K ? never : P]: T[P] } &
+  { [P in keyof T as P extends K ? P : never]-?: T[P] } extends infer O ? (
+    { [P in keyof O]: O[P] }
+  ) : never
 ```
-[2793・Mutable][]
+[2793・Mutable][2793]
 ```ts
+type Mutable<T extends object> = {
+  -readonly [K in keyof T]: T[K]
+}
 ```
-[2852・OmitByType][]
+
+[2852・OmitByType][2852]
 ```ts
+type OmitByType<T, U> = {
+  [K in keyof T as T[K] extends U ? never : K]: T[K]
+}
 ```
+
 [2946・ObjectEntries][]
 ```ts
 ```
@@ -553,6 +583,13 @@ type MinusOne<
 [1978]: https://github.com/type-challenges/type-challenges/blob/main/questions/01978-medium-percentage-parser/README.md
 [2070]: https://github.com/type-challenges/type-challenges/blob/main/questions/02070-medium-drop-char/README.md
 [2257]: https://github.com/type-challenges/type-challenges/blob/main/questions/02257-medium-minusone/README.md
+[2595]: https://github.com/type-challenges/type-challenges/blob/main/questions/02595-medium-pickbytype/README.md
+[2688]: https://github.com/type-challenges/type-challenges/blob/main/questions/02688-medium-startswith/README.md
+[2693]: https://github.com/type-challenges/type-challenges/blob/main/questions/02693-medium-endswith/README.md
+[2757]: https://github.com/type-challenges/type-challenges/blob/main/questions/02757-medium-partialbykeys/README.md
+[2759]: https://github.com/type-challenges/type-challenges/blob/main/questions/02759-medium-requiredbykeys/README.md
+[2793]: https://github.com/type-challenges/type-challenges/blob/main/questions/02793-medium-mutable/README.md
+[2852]: https://github.com/type-challenges/type-challenges/blob/main/questions/02852-medium-omitbytype/README.md
 [3057]: https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md
 [3060]: https://github.com/type-challenges/type-challenges/blob/main/questions/03060-easy-unshift/README.md
 [3312]: https://github.com/type-challenges/type-challenges/blob/main/questions/03312-easy-parameters/README.md`
