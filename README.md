@@ -449,21 +449,45 @@ type OmitByType<T, U> = {
 }
 ```
 
-[2946・ObjectEntries][]
+[2946・ObjectEntries][2946]
 ```ts
+type ObjectEntries<T> = {
+  [K in keyof T]-?: [K, T[K] extends undefined ? undefined : Exclude<T[K], undefined>]
+}[keyof T]
 ```
-[3062・Shift][]
+
+[3062・Shift][3062]
 ```ts
+type Shift<T extends any[]> = T extends [infer A, ...infer R] 
+  ? R
+  : T
 ```
-[3188・Tuple to Nested Object][]
+
+[3188・Tuple to Nested Object][3188]
 ```ts
+type TupleToNestedObject<T extends any[], U, R = U> = T extends [...infer A, infer L] 
+  ? TupleToNestedObject<A, U, {[K in L & string]: R}>
+  : R
 ```
-[3192・Reverse][]
+
+[3192・Reverse][3192]
 ```ts
+type Reverse<T> = T extends [...infer F, infer L]
+  ? [L, ...Reverse<F>]
+  : []
 ```
-[3196・Flip Arguments][]
+
+[3196・Flip Arguments][3196]
 ```ts
+type Reverse<T> = T extends [...infer F, infer L]
+  ? [L, ...Reverse<F>]
+  : []
+
+type FlipArguments<T extends Function> = T extends (...arg: infer A) => infer R 
+  ? (...arg: Reverse<A>) => R
+  : never
 ```
+
 [3243・FlattenDepth][]
 ```ts
 ```
@@ -590,6 +614,11 @@ type OmitByType<T, U> = {
 [2759]: https://github.com/type-challenges/type-challenges/blob/main/questions/02759-medium-requiredbykeys/README.md
 [2793]: https://github.com/type-challenges/type-challenges/blob/main/questions/02793-medium-mutable/README.md
 [2852]: https://github.com/type-challenges/type-challenges/blob/main/questions/02852-medium-omitbytype/README.md
+[2946]: https://github.com/type-challenges/type-challenges/blob/main/questions/02946-medium-objectentries/README.md
 [3057]: https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.md
 [3060]: https://github.com/type-challenges/type-challenges/blob/main/questions/03060-easy-unshift/README.md
+[3062]: https://github.com/type-challenges/type-challenges/blob/main/questions/03062-medium-shift/README.md
+[3188]: https://github.com/type-challenges/type-challenges/blob/main/questions/03188-medium-tuple-to-nested-object/README.md
+[3192]: https://github.com/type-challenges/type-challenges/blob/main/questions/03192-medium-reverse/README.md
+[3196]: https://github.com/type-challenges/type-challenges/blob/main/questions/03196-medium-flip-arguments/README.md
 [3312]: https://github.com/type-challenges/type-challenges/blob/main/questions/03312-easy-parameters/README.md`
