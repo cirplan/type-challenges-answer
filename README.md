@@ -488,36 +488,94 @@ type FlipArguments<T extends Function> = T extends (...arg: infer A) => infer R
   : never
 ```
 
-[3243・FlattenDepth][]
+[3243・FlattenDepth][3242]
 ```ts
+type FlattenDepth<T extends any[], C extends number = 1, U extends any[] = []> = U['length'] extends C
+  ? T
+  : T extends [infer A, ...infer R]
+    ? A extends any[]
+      ? [...FlattenDepth<A, C, [0, ...U]>, ...FlattenDepth<R, C, U>]
+      : [A, ...FlattenDepth<R, C, U>]
+    : T
 ```
-[3326・BEM style string][]
+
+[3326・BEM style string][3326]
 ```ts
+type BEM<B extends string, E extends string[], M extends string[]> = `${B}${E extends [] ? '' : `__${E[number]}`}${M extends [] ? '' : `--${M[number]}`}`
 ```
-[3376・InorderTraversal][]
+
+[3376・InorderTraversal][3376]
 ```ts
+type InorderTraversal<T extends TreeNode | null> = [T] extends [TreeNode]
+  ? [
+    ...InorderTraversal<T['left']>,
+    T['val'],
+    ...InorderTraversal<T['right']>
+  ]
+  : []
 ```
-[4179・Flip][]
+
+[4179・Flip][4179]
 ```ts
+type Flip<T extends Record<string, string | number | boolean>> = {
+  [K in keyof T as `${T[K]}`]: K
+}
 ```
-[4182・Fibonacci Sequence][]
+
+[4182・Fibonacci Sequence][4182]
 ```ts
+type Fibonacci<T extends number, C extends any[] = [1], P extends any[] = [], V extends any[] = [1]> = C['length'] extends T
+  ? V['length']
+  : Fibonacci<T, [...C, 1], V, [...P, ...V]>
 ```
-[4260・AllCombinations][]
+
+[4260・AllCombinations][4260]
 ```ts
+type StringToUnion<S> = S extends `${infer A}${infer R}` ? A | StringToUnion<R> : S;
+type AllCombinations<S extends string, T extends string = StringToUnion<S>, U extends string = T> = S extends `${infer A}${infer R}`
+  ? U extends U
+    ? `${U}${AllCombinations<R, U extends '' ? T : Exclude<T, U>>}`
+    : never
+  : ''
 ```
-[4425・Greater Than][]
+
+[4425・Greater Than][4425]
 ```ts
+type Length<T extends any[]> = T['length'];
+type GreaterThan<T extends number, U extends number, N extends any[] = []> = Length<N> extends T
+  ? false
+  : Length<N> extends U
+    ? true
+    : GreaterThan<T, U, [...N, 1]>
 ```
-[4471・Zip][]
+
+[4471・Zip][4471]
 ```ts
+type Zip<T extends any[], P extends any[]> = [T, P] extends [[infer TA, ...infer TR], [infer PA, ...infer PR]]
+  ? [[TA, PA], ...Zip<TR, PR>]
+  : []
 ```
-[4484・IsTuple][]
+
+[4484・IsTuple][4484]
 ```ts
+type IsTuple<T> = [T] extends [never]
+  ? false
+  : T extends readonly [any?]
+    ? true
+    : false
 ```
-[4499・Chunk][]
+
+[4499・Chunk][4499]
 ```ts
+type Chunk<T extends any[], N, C extends any[] = []> = C['length'] extends N
+  ? [C, ...Chunk<T, N>]
+  : T extends [infer A, ...infer B]
+    ? Chunk<B, N, [...C, A]>
+    : C extends []
+      ? C
+      : [C]
 ```
+
 [4518・Fill][]
 ```ts
 ```
@@ -621,4 +679,14 @@ type FlipArguments<T extends Function> = T extends (...arg: infer A) => infer R
 [3188]: https://github.com/type-challenges/type-challenges/blob/main/questions/03188-medium-tuple-to-nested-object/README.md
 [3192]: https://github.com/type-challenges/type-challenges/blob/main/questions/03192-medium-reverse/README.md
 [3196]: https://github.com/type-challenges/type-challenges/blob/main/questions/03196-medium-flip-arguments/README.md
+[3243]: https://github.com/type-challenges/type-challenges/blob/main/questions/03243-medium-flattendepth/README.md
 [3312]: https://github.com/type-challenges/type-challenges/blob/main/questions/03312-easy-parameters/README.md`
+[3326]: https://github.com/type-challenges/type-challenges/blob/main/questions/03326-medium-bem-style-string/README.md
+[3376]: https://github.com/type-challenges/type-challenges/blob/main/questions/03376-medium-inordertraversal/README.md
+[4179]: https://github.com/type-challenges/type-challenges/blob/main/questions/04179-medium-flip/README.md
+[4182]: https://github.com/type-challenges/type-challenges/blob/main/questions/04182-medium-fibonacci-sequence/README.md
+[4260]: https://github.com/type-challenges/type-challenges/blob/main/questions/04260-medium-nomiwase/README.md
+[4425]: https://github.com/type-challenges/type-challenges/blob/main/questions/04425-medium-greater-than/README.md
+[4471]: https://github.com/type-challenges/type-challenges/blob/main/questions/04471-medium-zip/README.md
+[4484]: https://github.com/type-challenges/type-challenges/blob/main/questions/04484-medium-istuple/README.md
+[4499]: https://github.com/type-challenges/type-challenges/blob/main/questions/04499-medium-chunk/README.md
