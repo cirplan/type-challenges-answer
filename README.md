@@ -4,7 +4,7 @@ find the questions in [type-challenges][challenges].
 
 * [x] [warm-up (1)](#warm-up-1)
 * [x] [easy (13)](#easy-13)
-* [ ] [medium (68)](#medium-68)
+* [x] [medium (68)](#medium-68)
 * [ ] [hard (39)](#hard-39)
 
 ## warm-up (1)
@@ -576,44 +576,135 @@ type Chunk<T extends any[], N, C extends any[] = []> = C['length'] extends N
       : [C]
 ```
 
-[4518・Fill][]
+[4518・Fill][4518]
 ```ts
+type Fill<
+  T extends unknown[],
+  N,
+  Start extends number = 0,
+  End extends number = T['length'],
+  U extends any[] = [],
+  Flag extends boolean = false
+> = Start extends End
+    ? T
+    : T extends [infer A, ...infer L]
+      ? U['length'] extends Start
+        ? Fill<L, N, Start, End, [...U, N], true>
+        : U['length'] extends End
+          ? Fill<L, N, Start, End, [...U, A], false>
+          : Flag extends true
+            ? Fill<L, N, Start, End, [...U, N], true>
+            : Fill<L, N, Start, End, [...U, A], false>
+      : U
 ```
-[4803・Trim Right][]
+
+[4803・Trim Right][4803]
 ```ts
+type Empty = ' ' | '\n' | '\t';
+type TrimRight<S extends string> = S extends `${infer A}${Empty}` ? TrimRight<A> : S
 ```
-[5117・Without][]
+
+[5117・Without][5117]
 ```ts
+type ToUnion<T> = T extends any[] ? T[number] : T;
+type Without<T extends any[], U extends number | any[]> = T extends [infer A, ...infer R]
+  ? A extends ToUnion<U>
+    ? Without<R, U>
+    : [A, ... Without<R, U>]
+  : []
 ```
-[5140・Trunc][]
+
+[5140・Trunc][5140]
 ```ts
+type Trunc<T extends number | string> = `${T}` extends `${infer A}.${infer R}`
+  ? A
+  : `${T}`
 ```
-[5153・IndexOf][]
+
+[5153・IndexOf][5153]
 ```ts
+type IndexOf<T extends any[], U, R extends any[] = []> = T extends [infer A, ...infer B]
+  ? Equal<A, U> extends true
+    ? R['length']
+    : IndexOf<B, U, [...R, 0]>
+  : -1
 ```
-[5310・Join][]
+
+[5310・Join][5310]
 ```ts
+type Join<T extends any[], U extends string> = T extends [infer A extends string, ...infer R]
+  ? R extends []
+    ? `${A}`
+    : `${A}${U}${Join<R, U>}`
+  : ''
 ```
-[5317・LastIndexOf][]
+
+[5317・LastIndexOf][5317]
 ```ts
+type LastIndexOf<T extends any[], U> = T extends [...infer A, infer L]
+  ? Equal<U, L> extends true
+    ? A['length']
+    : LastIndexOf<A, U>
+  : -1
 ```
-[5360・Unique][]
+
+[5360・Unique][5360]
 ```ts
+type SelfEqual<U, T extends any[]> = T extends [infer A, ...infer B]
+  ? Equal<U, A> extends true
+    ? true
+    : SelfEqual<U, B>
+  : false
+type Unique<T extends any[], U extends any[] = []> = T extends [infer A, ...infer B]
+  ? SelfEqual<A, U> extends true
+    ? Unique<B, U>
+    : Unique<B, [...U, A]>
+  : U
 ```
-[5821・MapTypes][]
+
+[5821・MapTypes][5821]
 ```ts
+type MapTypes<T, R extends {
+  mapFrom: any,
+  mapTo: any
+}> = {
+  [K in keyof T]: T[K] extends R['mapFrom'] 
+      ? R extends { mapFrom: T[K], mapTo: any }
+        ? R['mapTo']
+        : never
+    : T[K]
+}
 ```
-[7544・Construct Tuple][]
+
+[7544・Construct Tuple][7544]
 ```ts
+type ConstructTuple<L extends number, U extends any[] = []> = U['length'] extends L
+  ? U
+  : ConstructTuple<L, [...U, unknown]>
 ```
-[8640・Number Range][]
+
+[8640・Number Range][8640]
 ```ts
+type AddOne<T, U extends any[] = []> = U['length'] extends T
+  ? [...U, 1]['length']
+  : AddOne<T, [...U, 1]>
+type NumberRange<L extends number, H extends number, U extends any[] = []> = L extends H
+  ? [...U, L][number]
+  : NumberRange<AddOne<L>, H, [...U, L]>
 ```
-[8767・Combination][]
+
+[8767・Combination][8767]
 ```ts
+type Combination<T extends string[], U = T[number], D = U> = D extends string
+  ? D | `${D} ${Combination<[], Exclude<U, D>>}`
+  : never
 ```
-[8987・Subsequence][]
+
+[8987・Subsequence][8978]
 ```ts
+type Subsequence<T extends any[]> = T extends [infer A, ...infer L]
+  ? [...([A] | []), ...Subsequence<L>]
+  : []
 ```
 
 
@@ -690,3 +781,16 @@ type Chunk<T extends any[], N, C extends any[] = []> = C['length'] extends N
 [4471]: https://github.com/type-challenges/type-challenges/blob/main/questions/04471-medium-zip/README.md
 [4484]: https://github.com/type-challenges/type-challenges/blob/main/questions/04484-medium-istuple/README.md
 [4499]: https://github.com/type-challenges/type-challenges/blob/main/questions/04499-medium-chunk/README.md
+[4518]: https://github.com/type-challenges/type-challenges/blob/main/questions/04518-medium-fill/README.md
+[4803]: https://github.com/type-challenges/type-challenges/blob/main/questions/04803-medium-trim-right/README.md
+[5117]: https://github.com/type-challenges/type-challenges/blob/main/questions/05117-medium-without/README.md
+[5140]: https://github.com/type-challenges/type-challenges/blob/main/questions/05140-medium-trunc/README.md
+[5153]: https://github.com/type-challenges/type-challenges/blob/main/questions/05153-medium-indexof/README.md
+[5310]: https://github.com/type-challenges/type-challenges/blob/main/questions/05310-medium-join/README.md
+[5317]: https://github.com/type-challenges/type-challenges/blob/main/questions/05317-medium-lastindexof/README.md
+[5360]: https://github.com/type-challenges/type-challenges/blob/main/questions/05360-medium-unique/README.md
+[5821]: https://github.com/type-challenges/type-challenges/blob/main/questions/05821-medium-maptypes/README.md
+[7544]: https://github.com/type-challenges/type-challenges/blob/main/questions/07544-medium-construct-tuple/README.md
+[8640]: https://github.com/type-challenges/type-challenges/blob/main/questions/08640-medium-number-range/README.md
+[8767]: https://github.com/type-challenges/type-challenges/blob/main/questions/08767-medium-combination/README.md
+[8978]: https://github.com/type-challenges/type-challenges/blob/main/questions/08987-medium-subsequence/README.md
