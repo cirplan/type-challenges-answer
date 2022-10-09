@@ -6,6 +6,7 @@ find the questions in [type-challenges][challenges].
 * [x] [easy (13)](#easy-13)
 * [x] [medium (68)](#medium-68)
 * [ ] [hard (39)](#hard-39)
+* [ ] [extreme (14)](#extreme-14)
 
 ## warm-up (1)
 
@@ -710,11 +711,227 @@ type Subsequence<T extends any[]> = T extends [infer A, ...infer L]
 
 ## hard (39)
 
+[6・Simple Vue][6]
+```ts
+type Options<Data, Computed, Methods> = {
+  data?: () => Data;
+  computed?: Computed & ThisType<Data & {
+    [K in keyof Computed]: Computed[K] extends (...args: any) => infer R ? R : never
+  }>;
+  methods?: Methods & ThisType<Data & Methods & {
+    [K in keyof Computed]: Computed[K] extends (...args: any) => infer R ? R : never;
+  }>
+}
+
+declare function SimpleVue<Data, Computed, Methods>(options: Options<Data, Computed, Methods>): any
+```
+
+[17・Currying 1][17]
+```ts
+type CurryingRet<Fn> = Fn extends (first: infer H, ...args: infer Args) => infer Ret 
+  ? Args extends []
+    ? (h : H) => Ret
+    : (h: H) => CurryingRet<(...args: Args) => Ret>
+  : never
+  
+declare function Currying<Fn>(fn: Fn): Fn extends () => infer Ret ? () => Ret :CurryingRet<Fn>    ? (h : H) => Ret
+
+```
+<!-- 
+[55・Union to Intersection][]
+```ts
+
+```
+
+[57・Get Required][]
+```ts
+
+```
+
+[59・Get Optional][]
+```ts
+
+```
+
+[89・Required Keys][]
+```ts
+
+```
+
+[90・Optional Keys][]
+```ts
+
+```
+
+[112・Capitalize Words][]
+```ts
+
+```
+
+[114・CamelCase][]
+```ts
+
+```
+
+[147・C-printf Parser][]
+```ts
+
+```
+
+[213・Vue Basic Props][]
+```ts
+
+```
+
+[223・IsAny][]
+```ts
+
+```
+
+[270・Typed Get][]
+```ts
+
+```
+
+[300・String to Number][]
+```ts
+
+```
+
+[399・Tuple Filter][]
+```ts
+
+```
+
+[472・Tuple to Enum Object][]
+```ts
+
+```
+
+[545・printf][]
+```ts
+
+```
+
+[553・Deep object to unique][]
+```ts
+
+```
+
+[651・Length of String 2][]
+```ts
+
+```
+
+[730・Union to Tuple][]
+```ts
+
+```
+
+[847・String Join][]
+```ts
+
+```
+
+[956・DeepPick][]
+```ts
+
+```
+
+[1290・Pinia][]
+```ts
+
+```
+
+[1383・Camelize][]
+```ts
+
+```
+
+[2059・Drop String][]
+```ts
+
+```
+
+[2822・Split][]
+```ts
+
+```
+
+[2828・ClassPublicKeys][]
+```ts
+
+```
+
+[2857・IsRequiredKey][]
+```ts
+
+```
+
+[2949・ObjectFromEntries][]
+```ts
+
+```
+
+[4037・IsPalindrome][]
+```ts
+
+```
+
+[5181・Mutable Keys][]
+```ts
+
+```
+
+[5423・Intersection][]
+```ts
+
+```
+
+[6141・Binary to Decimal][]
+```ts
+
+```
+
+[7258・Object Key Paths][]
+```ts
+
+```
+
+[8804・Two Sum][]
+```ts
+
+```
+
+[9155・ValidDate][]
+```ts
+
+```
+
+[9160・Assign][]
+```ts
+
+```
+
+[9775・Capitalize Nest Object Keys][]
+```ts
+
+```
+
+[14188・Run-length encoding][]
+```ts
+
+``` -->
+
+
+## extreme (14)
+
 
 [challenges]: https://github.com/type-challenges/type-challenges
 [2]: https://github.com/type-challenges/type-challenges/blob/main/questions/00002-medium-return-type/README.md
 [3]: https://github.com/type-challenges/type-challenges/blob/main/questions/00003-medium-omit/README.md
 [4]: https://github.com/type-challenges/type-challenges/blob/main/questions/00004-easy-pick/README.md
+[6]: https://github.com/type-challenges/type-challenges/blob/main/questions/00006-hard-simple-vue/README.md
 [7]: https://github.com/type-challenges/type-challenges/blob/main/questions/00007-easy-readonly/README.md
 [8]: https://github.com/type-challenges/type-challenges/blob/main/questions/00008-medium-readonly-2/README.md
 [9]: https://github.com/type-challenges/type-challenges/blob/main/questions/00009-medium-deep-readonly/README.md
@@ -725,6 +942,7 @@ type Subsequence<T extends any[]> = T extends [infer A, ...infer L]
 [14]: https://github.com/type-challenges/type-challenges/blob/main/questions/00014-easy-first/README.md
 [15]: https://github.com/type-challenges/type-challenges/blob/main/questions/00015-medium-last/README.md
 [16]: https://github.com/type-challenges/type-challenges/blob/main/questions/00016-medium-pop/README.md
+[17]: https://github.com/type-challenges/type-challenges/blob/main/questions/00017-hard-currying-1/README.md
 [18]: https://github.com/type-challenges/type-challenges/blob/main/questions/00018-easy-tuple-length/README.md
 [20]: https://github.com/type-challenges/type-challenges/blob/main/questions/00020-medium-promise-all/README.md
 [43]: https://github.com/type-challenges/type-challenges/blob/main/questions/00043-easy-exclude/README.md
