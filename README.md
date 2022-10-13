@@ -735,14 +735,17 @@ type CurryingRet<Fn> = Fn extends (first: infer H, ...args: infer Args) => infer
   : never
   
 declare function Currying<Fn>(fn: Fn): Fn extends () => infer Ret ? () => Ret :CurryingRet<Fn>    ? (h : H) => Ret
-
 ```
-<!-- 
-[55・Union to Intersection][]
+
+
+[55・Union to Intersection][55]
+
+[思路](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#type-inference-in-conditional-types)
 ```ts
-
+type UnionToIntersection<U> = (U extends any ? (arg: U) => any : never) extends ((arg: infer I) => void) ? I : never
 ```
 
+<!-- 
 [57・Get Required][]
 ```ts
 
@@ -946,6 +949,7 @@ declare function Currying<Fn>(fn: Fn): Fn extends () => infer Ret ? () => Ret :C
 [18]: https://github.com/type-challenges/type-challenges/blob/main/questions/00018-easy-tuple-length/README.md
 [20]: https://github.com/type-challenges/type-challenges/blob/main/questions/00020-medium-promise-all/README.md
 [43]: https://github.com/type-challenges/type-challenges/blob/main/questions/00043-easy-exclude/README.md
+[55]: https://github.com/type-challenges/type-challenges/blob/main/questions/00055-hard-union-to-intersection/README.md
 [62]: https://github.com/type-challenges/type-challenges/blob/main/questions/00062-medium-type-lookup/README.md
 [106]: https://github.com/type-challenges/type-challenges/blob/main/questions/00106-medium-trimleft/README.md
 [108]: https://github.com/type-challenges/type-challenges/blob/main/questions/00108-medium-trim/README.md
