@@ -18,6 +18,9 @@ type HelloWorld = string
 ## easy (13)
 
 [4・Pick][4]
+
+思路：`keyof` 获取对象的 `keys`，`in` 进行遍历
+
 ```ts
 type MyPick<T, K extends keyof T> = {
   [P in K]: T[P]
@@ -25,6 +28,9 @@ type MyPick<T, K extends keyof T> = {
 ```
 
 [7・Readonly][7]
+
+思路：`readonly` 关键字的使用
+
 ```ts
 type MyReadonly<T> = {
   readonly [P in keyof T]: T[P]
@@ -32,6 +38,9 @@ type MyReadonly<T> = {
 ```
 
 [11・Tuple to Object][11]
+
+思路：`number` 作为元组的下标
+
 ```ts
 type TupleToObject<T extends ReadonlyArray<string | number>> = {
   [P in T[number]]: P
@@ -39,21 +48,33 @@ type TupleToObject<T extends ReadonlyArray<string | number>> = {
 ```
 
 [14・First of Array][14]
+
+思路：`[]` 空数组
+
 ```ts
 type First<T extends any[]> = T extends [] ? never : T[0]
 ```
 
 [18・Length of Tuple][18]
+
+思路：`length` 属性
+
 ```ts
 type Length<T extends readonly any[]> = T['length']
 ```
 
 [43・Exclude][43]
+
+思路：联合会自动展开
+
 ```ts
 type MyExclude<T, U> = T extends U ? never : T
 ```
 
 [189・Awaited][189]
+
+思路：`infer` 的使用，注意判断递归
+
 ```ts
 type MyAwaited<T extends Promise<unknown>> = T extends Promise<infer U>
   ? U extends Promise<unknown>
@@ -63,16 +84,33 @@ type MyAwaited<T extends Promise<unknown>> = T extends Promise<infer U>
 
 ```
 [268・If][268]
+
 ```ts
 type If<C extends boolean, T, F> = C extends true ? T : F
 ```
 
 [533・Concat][533]
+
+思路：`...` 的使用
+
 ```ts
 type Concat<T extends any[], U extends any[]> = [...T, ...U]
 ```
 
 [898・Includes][898]
+
+思路：判断两个变量是否相等得用 `Equal`，其实现是：
+
+```ts
+type Equal<X, Y> = (<T>() => T extends X 
+  ? 1 
+  : 2) extends <T>() => T extends Y 
+    ? 1 
+    : 2 
+      ? true 
+      : false
+```
+
 ```ts
 type Includes<T extends readonly any[], U> = T extends [infer A, ...infer reset] 
   ? Equal<A, U> extends true
@@ -82,16 +120,25 @@ type Includes<T extends readonly any[], U> = T extends [infer A, ...infer reset]
 ```
 
 [3057・Push][3057]
+
+思路：`...` 的使用
+
 ```ts
 type Push<T extends any[], U> = [...T, U]
 ```
 
 [3060・Unshift][3060]
+
+思路：`...` 的使用
+
 ```ts
 type Unshift<T extends any[], U> = [U, ...T]
 ```
 
 [3312・Parameters][3312]
+
+思路：`infer` 的使用
+
 ```ts
 type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any ? P : never
 ```
