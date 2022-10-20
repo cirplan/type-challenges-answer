@@ -145,11 +145,17 @@ type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer
 
 ## medium (68)
 [2・Get Return Type][2]
+
+思路：`infer`
+
 ```ts
 type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never
 ```
 
 [3・Omit][3]
+
+思路：`as`
+
 ```ts
 type MyOmit<T, K extends keyof T> = {
   [P in Exclude<keyof T, K>]: T[P]
@@ -161,6 +167,9 @@ type MyOmit<T, K extends keyof T> = {
 ```
 
 [8・Readonly 2][8]
+
+思路：`&`
+
 ```ts
 type Diff<A, B> = A extends B ? never : A;
 
@@ -184,6 +193,9 @@ type DeepReadonly<T> = {
 ```
 
 [10・Tuple to Union][10]
+
+思路：`T[number]`
+
 ```ts
 type TupleToUnion<T extends any[]> = T[number]
 // or 
@@ -191,6 +203,7 @@ type TupleToUnion<T extends any[]> = T extends Array<infer R> ? R : never
 ```
 
 [12・Chainable Options][12]
+
 ```ts
 type Chainable<T = {}> = {
   option<K extends string, V>(
