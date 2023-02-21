@@ -39,7 +39,7 @@ type MyReadonly<T> = {
 
 [11・Tuple to Object][11]
 
-思路：`number` 作为元组的下标
+思路：`number` 作为元组的下标，`ReadonlyArray` 的使用
 
 ```ts
 type TupleToObject<T extends ReadonlyArray<string | number>> = {
@@ -73,17 +73,18 @@ type MyExclude<T, U> = T extends U ? never : T
 
 [189・Awaited][189]
 
-思路：`infer` 的使用，注意判断递归
+思路：`infer` 和 `PromiseLike` 的使用，注意判断递归
 
 ```ts
-type MyAwaited<T extends Promise<unknown>> = T extends Promise<infer U>
-  ? U extends Promise<unknown>
+type MyAwaited<T extends PromiseLike<any>> = T extends PromiseLike<infer U> 
+  ? U extends PromiseLike<unknown> 
     ? MyAwaited<U>
     : U
   : never
-
 ```
 [268・If][268]
+
+思路：`boolean` 的使用
 
 ```ts
 type If<C extends boolean, T, F> = C extends true ? T : F
