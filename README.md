@@ -147,7 +147,7 @@ type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer
 ## medium (68)
 [2・Get Return Type][2]
 
-思路：`infer`
+思路：`infer` 的使用，同时注意函数参数的有无
 
 ```ts
 type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never
@@ -155,7 +155,7 @@ type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never
 
 [3・Omit][3]
 
-思路：`as`
+思路：`as` 的使用。或者 `Exclude`。
 
 ```ts
 type MyOmit<T, K extends keyof T> = {
@@ -169,7 +169,7 @@ type MyOmit<T, K extends keyof T> = {
 
 [8・Readonly 2][8]
 
-思路：`&`
+思路：`&` 的使用，还要注意默认值
 
 ```ts
 type Diff<A, B> = A extends B ? never : A;
@@ -180,9 +180,18 @@ type MyReadonly2<T, K extends keyof T = keyof T> = {
   [S in Diff<keyof T, K>]: T[S]
 }
 
+// or
+type MyReadonly2<T, K extends keyof T = keyof T> = {
+  readonly [P in K] : T[P]
+} & {
+  [P in Exclude<keyof T, K>]: T[P]
+}
 ```
 
 [9・Deep Readonly][9]
+
+思路：`object` 表示非基础类型；基础类型是可以赋值给 `Object` 和 `{}`，但在编译时，`{}` 是不包含 `Object` 属性的，自然也不会进行校验。`Object` 则会进行对应校验，相比更加严格。具体可以看 [Object vs object vs {}](https://cirplan.me/post/2022/10-11-ts-types-challenges/#object-vs-object-vs-)
+
 ```ts
 type DeepReadonly<T> = {
   readonly [P in keyof T]: T[P] extends {}
@@ -205,15 +214,11 @@ type TupleToUnion<T extends any[]> = T extends Array<infer R> ? R : never
 
 [12・Chainable Options][12]
 
+思路：设置默认对象，注意 key 不能重复
+
 ```ts
 type Chainable<T = {}> = {
-  option<K extends string, V>(
-    key: K extends keyof T 
-      ? Equal<V, T[K]> extends true
-        ? never 
-        : K 
-      : K,
-    value: V): Chainable<{ [S in keyof T as S extends K ? never : S]: T[S] } & { [S in K]: V }>
+  option<K extends string, V>(key: K extends keyof T ? never : K, value: V): Chainable<{ [S in keyof T as S extends K ? never : S]: T[S] } & { [S in K]: V }>
   get(): T
 }
 ```
